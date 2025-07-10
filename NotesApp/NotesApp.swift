@@ -4,11 +4,18 @@ import SwiftData
 /// Main app entry point with multi-window support for iPadOS
 @main
 struct NotesApp: App {
+    @StateObject private var paywallManager = PaywallManager()
+    @StateObject private var collaborationService = CollaborationService()
+    @StateObject private var exportService = ExportService()
+    
     var body: some Scene {
         // Multi-window support for iPadOS
         WindowGroup {
             ContentView()
                 .modelContainer(for: [Note.self, Folder.self, Tag.self])
+                .environmentObject(paywallManager)
+                .environmentObject(collaborationService)
+                .environmentObject(exportService)
         }
         .windowResizability(.contentSize)
         
@@ -17,6 +24,9 @@ struct NotesApp: App {
             if let noteID = noteID {
                 NoteEditorWindowView(noteID: noteID)
                     .modelContainer(for: [Note.self, Folder.self, Tag.self])
+                    .environmentObject(paywallManager)
+                    .environmentObject(collaborationService)
+                    .environmentObject(exportService)
             }
         }
         .windowResizability(.contentSize)
@@ -143,4 +153,3 @@ struct NoteEditorWindowView: View {
     ContentView()
         .modelContainer(for: [Note.self, Folder.self, Tag.self], inMemory: true)
 }
-
