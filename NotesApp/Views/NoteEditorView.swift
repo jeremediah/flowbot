@@ -61,15 +61,15 @@ struct NoteEditorView: View {
                     )
                     .padding(.horizontal)
                     
-                    // Drawing canvas (if has handwriting)
+                    // Enhanced drawing canvas (if has handwriting)
                     if note.hasHandwriting || showingDrawingCanvas {
-                        DrawingCanvasView(
+                        EnhancedDrawingView(
                             canvasView: $canvasView,
-                            note: note,
-                            isVisible: $showingDrawingCanvas
+                            note: note
                         )
-                        .frame(height: 300)
+                        .frame(height: 400)
                         .padding(.horizontal)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
                     
                     // Attachments
@@ -709,4 +709,3 @@ struct MoveNoteSheet: View {
     }
     .modelContainer(for: [Note.self, Folder.self, Tag.self], inMemory: true)
 }
-
